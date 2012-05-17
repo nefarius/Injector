@@ -125,7 +125,6 @@
   <ItemGroup>
     <ClInclude Include="EnsureCleanup.h" />
     <ClInclude Include="Injector.h" />
-    <ClInclude Include="OptionParser.h" />
     <ClInclude Include="ProcFindMethod.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Seh.h" />
