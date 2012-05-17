@@ -3,6 +3,7 @@
 #include "Seh.h"
 #include "StringWrap.h"
 #include "ProcFindMethod.h"
+#include "getopt.h"
 
 // Windows API
 #include <Windows.h>
