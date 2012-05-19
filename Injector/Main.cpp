@@ -1,4 +1,4 @@
-// StealthLib
+// Injector
 #include "Injector.h"
 #include "Seh.h"
 #include "StringWrap.h"
