@@ -42,14 +42,21 @@ int _tmain(int argc, TCHAR** argv)
 #endif
 		std::tcout << _T("Copyright (c) 2009 Cypher. All rights reserved.") << std::endl << std::endl;
 
+		enum ExtraOptions
+		{
+			OptModuleName = 4,
+			OptInject,
+			OptEject
+		};
+
 		static struct option long_options[] =
 		{
 			{ _T("process-name"),	ARG_REQ,	0, FindProcName },
 			{ _T("window-name"),	ARG_REQ,	0, FindProcWindow },
 			{ _T("process-id"),		ARG_REQ,	0, FindProcID },
-			{ _T("module-name"),	ARG_REQ,	0, 0 },
-			{ _T("inject"),			ARG_NONE,	0, 4 },
-			{ _T("eject"),			ARG_NONE,	0, 5 }
+			{ _T("module-name"),	ARG_REQ,	0, OptModuleName },
+			{ _T("inject"),			ARG_NONE,	0, OptInject },
+			{ _T("eject"),			ARG_NONE,	0, OptEject }
 		};
 
 		// Variable to store process ID
@@ -57,16 +64,17 @@ int _tmain(int argc, TCHAR** argv)
 		// Fully qualified module path
 		std::tstring ModulePath;
 
-		int option_index = 0, c;
+		int option_index = 0, c, action = 0;
 
 		do 
 		{
+			// Parse long arguments passed
 			c = getopt_long(argc, argv, _T(""), long_options, &option_index);
 
 			// Switch over method
 			switch (c)
 			{
-			case 0:
+			case OptModuleName:
 				// ModulePath = Injector::Get()->GetPath(optarg);
 				ModulePath = optarg;
 				break;
@@ -76,8 +84,6 @@ int _tmain(int argc, TCHAR** argv)
 					// Get entered process name and convert to lowercase
 					std::tstring ProcessName(optarg);
 					std::transform(ProcessName.begin(),ProcessName.end(),ProcessName.begin(),tolower);
-
-					std::tcout << _T("Process name given: ") << ProcessName << std::endl;
 
 					// Attempt injection via process name
 					ProcID = Injector::Get()->GetProcessIdByName(ProcessName);
@@ -90,8 +96,6 @@ int _tmain(int argc, TCHAR** argv)
 					// Get entered window name
 					std::tstring WindowName(optarg);
 
-					std::tcout << _T("Window name given: ") << WindowName << std::endl;
-
 					// Attempt injection via window name
 					ProcID = Injector::Get()->GetProcessIdByWindow(WindowName);
 
@@ -102,10 +106,46 @@ int _tmain(int argc, TCHAR** argv)
 				{
 					std::tstring ProcessID(optarg);
 
-					std::tcout << _T("Process identifier given: ") << ProcessID << std::endl;
-
 					// Check if entered PID was valid
 					ProcID = _tstoi(ProcessID.c_str());
+
+					break;
+				}
+			case OptInject:
+				{
+					action = OptInject;
+					break;
+				}
+			case OptEject:
+				{
+					action = OptEject;
+					break;
+				}
+				// Ignore end of argument list
+			case -1:
+				{
+					break;
+				}
+			default:
+				{
+					// Print usage of command line arguments
+					std::tcout << _T("It looks like you didn't pass some valid parameters. Pease use:") 
+						<< std::endl << std::endl;
+					std::tcout << _T("--process-name notepad.exe") << std::endl;
+					std::tcout << _T("\tIdentifies the target process by it's module name.") 
+						<< std::endl << std::endl;
+					std::tcout << _T("--window-name \"Unnamed - Editor\"") << std::endl;
+					std::tcout << _T("\tIdentifies the target process by it's main windows name.") 
+						<< std::endl << std::endl;
+					std::tcout << _T("--process-id 7968") << std::endl;
+					std::tcout << _T("\tIdentifies the target process by it's PID.") 
+						<< std::endl << std::endl;
+					std::tcout << _T("--module-name C:\\temp\\mylib.dll") << std::endl;
+					std::tcout << _T("\tSets the absolute path of the DLL to be in-/ejected.") 
+						<< std::endl << std::endl;
+					std::tcout << _T("--inject or --eject") << std::endl;
+					std::tcout << _T("\tSpecifies the action to perform (inject or eject the DLL).") 
+						<< std::endl << std::endl;
 
 					break;
 				}
@@ -114,23 +154,20 @@ int _tmain(int argc, TCHAR** argv)
 
 		// Get privileges required to perform the injection
 		Injector::Get()->GetSeDebugPrivilege();
-		// Reset options index to scan for given action
-		optind = 1;
-
-		do 
+		
+		switch(action)
 		{
-			c = getopt_long(argc, argv, _T(""), long_options, &option_index);
-
-			switch(c)
+		case OptInject:
 			{
-			case 4:
 				// Inject module
 				Injector::Get()->InjectLib(ProcID,ModulePath);
 				// If we get to this point then no exceptions have been thrown so we
 				// assume success.
 				std::tcout << "Successfully injected module!" << std::endl;
 				break;
-			case 5:
+			}
+		case OptEject:
+			{
 				// Eject module
 				Injector::Get()->EjectLib(ProcID,ModulePath);
 				// If we get to this point then no exceptions have been thrown so we
@@ -138,7 +175,12 @@ int _tmain(int argc, TCHAR** argv)
 				std::tcout << "Successfully ejected module!" << std::endl;
 				break;
 			}
-		} while (c != -1);
+		default:
+			{
+				std::tcout << "No action specified!" << std::endl;
+				break;
+			}
+		}
 	}
 	// Catch STL-based exceptions.
 	catch (const std::exception& e)
