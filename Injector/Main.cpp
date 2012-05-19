@@ -23,22 +23,14 @@ int _tmain(int argc, TCHAR** argv)
 		// Needed to proxy SEH exceptions to C++ exceptions
 		SehGuard Guard;
 
-		// StealthLib version number
-		const std::tstring VerNum(_T("20090421b"));
-
-		// StealthLib module name
-		// Different names for x86/x64
-#ifdef _WIN64
-		const std::tstring ModuleName(_T("Stealth64.dll"));
-#else
-		const std::tstring ModuleName(_T("Stealth86.dll"));
-#endif // _WIN64
+		// Injector version number
+		const std::tstring VerNum(_T("20120519c"));
 
 		// Version and copyright output
 #ifdef _WIN64
-		std::tcout << _T("StealthLib x64 [Version ") << VerNum << _T("]") << std::endl;
+		std::tcout << _T("Injector x64 [Version ") << VerNum << _T("]") << std::endl;
 #else
-		std::tcout << _T("StealthLib x86 [Version ") << VerNum << _T("]") << std::endl;
+		std::tcout << _T("Injector x86 [Version ") << VerNum << _T("]") << std::endl;
 #endif
 		std::tcout << _T("Copyright (c) 2009 Cypher. All rights reserved.") << std::endl << std::endl;
 
