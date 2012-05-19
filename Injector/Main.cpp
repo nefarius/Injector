@@ -67,7 +67,8 @@ int _tmain(int argc, TCHAR** argv)
 			switch (c)
 			{
 			case 0:
-				ModulePath = Injector::Get()->GetPath(optarg);
+				// ModulePath = Injector::Get()->GetPath(optarg);
+				ModulePath = optarg;
 				break;
 				// Find and inject via process name
 			case FindProcName:
@@ -80,7 +81,6 @@ int _tmain(int argc, TCHAR** argv)
 
 					// Attempt injection via process name
 					ProcID = Injector::Get()->GetProcessIdByName(ProcessName);
-					std::tcout << _T("Process identifier: ") << ProcID << std::endl;
 
 					break;
 				}
@@ -114,7 +114,7 @@ int _tmain(int argc, TCHAR** argv)
 
 		// Get privileges required to perform the injection
 		Injector::Get()->GetSeDebugPrivilege();
-
+		// Reset options index to scan for given action
 		optind = 1;
 
 		do 
