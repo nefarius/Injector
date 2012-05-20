@@ -41,6 +41,7 @@ int _tmain(int argc, TCHAR** argv)
 			OptEject
 		};
 
+		// This translates long option names into "switch"-able values
 		static struct option long_options[] =
 		{
 			{ _T("process-name"),	ARG_REQ,	0, FindProcName },
