@@ -99,8 +99,13 @@ int _tmain(int argc, TCHAR** argv)
 				{
 					std::tstring ProcessID(optarg);
 
-					// Check if entered PID was valid
+					// Convert PID
 					ProcID = _tstoi(ProcessID.c_str());
+
+					if(ProcID == 0)
+					{
+						throw std::exception("Invalid PID entered!");
+					}
 
 					break;
 				}
