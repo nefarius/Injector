@@ -18,3 +18,11 @@ Yeah you read right: you can also eject any library with the `--eject` action.
 Many thanks to [Joshua "Cypher" Boyce][raptor] who initially wrote the injection-classes and shared them with the world. 
 
   [raptor]: http://www.raptorfactor.com/  "The Raptor Factor"
+
+Download
+--------
+* [Injector (x86)][injector86]
+* [Injector (x64)][injector64]
+
+  [injector86]: http://nefarius.at/wp-content/uploads/2013/06/Injector_x86.7z
+  [injector64]: http://nefarius.at/wp-content/uploads/2013/06/Injector_x64.7z
