@@ -21,8 +21,4 @@ Many thanks to [Joshua "Cypher" Boyce][raptor] who initially wrote the injection
 
 Download
 --------
-* [Injector (x86)][injector86]
-* [Injector (x64)][injector64]
-
-  [injector86]: http://nefarius.at/wp-content/uploads/2013/06/Injector_x86.7z
-  [injector64]: http://nefarius.at/wp-content/uploads/2013/06/Injector_x64.7z
+Head over to [Releases](https://github.com/nefarius/Injector/releases/latest) to download x86 and x64 binaries.
