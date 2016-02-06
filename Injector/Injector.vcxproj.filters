@@ -57,8 +57,8 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="1289035833_agt_virus-off.ico">
+    <Image Include="favicon.ico">
       <Filter>Resource Files</Filter>
-    </None>
+    </Image>
   </ItemGroup>
 </Project>

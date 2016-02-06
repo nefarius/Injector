@@ -9,6 +9,7 @@
 #include <Windows.h>
 #include <tchar.h>
 #include <TlHelp32.h>
+#include <Shlwapi.h>
 
 // C++ Standard Library
 #include <iostream>
@@ -68,8 +69,14 @@ int _tmain(int argc, TCHAR** argv)
 			switch (c)
 			{
 			case OptModuleName:
-				// ModulePath = Injector::Get()->GetPath(optarg);
-				ModulePath = optarg;
+				if (PathIsRelative(optarg))
+				{
+					ModulePath = Injector::Get()->GetPath(optarg);
+				}
+				else
+				{
+					ModulePath = optarg;
+				}
 				break;
 				// Find and inject via process name
 			case FindProcName:
@@ -138,8 +145,8 @@ int _tmain(int argc, TCHAR** argv)
 					std::tcout << _T("--process-id 7968") << std::endl;
 					std::tcout << _T("\tIdentifies the target process by it's PID.") 
 						<< std::endl << std::endl;
-					std::tcout << _T("--module-name C:\\temp\\mylib.dll") << std::endl;
-					std::tcout << _T("\tSets the absolute path of the DLL to be in-/ejected.") 
+					std::tcout << _T("--module-name mylib.dll") << std::endl;
+					std::tcout << _T("\tSets the path (or name only) of the DLL to be in-/ejected.") 
 						<< std::endl << std::endl;
 					std::tcout << _T("--inject or --eject") << std::endl;
 					std::tcout << _T("\tSpecifies the action to perform (inject or eject the DLL).") 
