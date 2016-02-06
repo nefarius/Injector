@@ -25,7 +25,7 @@ int _tmain(int argc, TCHAR** argv)
 		SehGuard Guard;
 
 		// Injector version number
-		const std::tstring VerNum(_T("20120519c"));
+		const std::tstring VerNum(_T("20160206"));
 
 		// Version and copyright output
 #ifdef _WIN64
@@ -33,7 +33,7 @@ int _tmain(int argc, TCHAR** argv)
 #else
 		std::tcout << _T("Injector x86 [Version ") << VerNum << _T("]") << std::endl;
 #endif
-		std::tcout << _T("Copyright (c) 2009 Cypher. All rights reserved.") << std::endl << std::endl;
+		std::tcout << _T("Copyright (c) 2009 Cypher, 2012-2016 Nefarius. All rights reserved.") << std::endl << std::endl;
 
 		enum ExtraOptions
 		{
