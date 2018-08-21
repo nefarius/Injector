@@ -23,3 +23,7 @@ Many thanks to [Joshua "Cypher" Boyce](http://www.raptorfactor.com/) who initial
 ## Download
 
 Head over to [Releases](https://github.com/nefarius/Injector/releases/latest) to download x86 and x64 binaries.
+
+## Builds
+
+[Automated builds end up here](https://buildbot.vigem.org/builds/Injector/master/), may be unstable and riddled with bugs, use with care.
