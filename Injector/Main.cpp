@@ -41,8 +41,7 @@ int main(int, char* argv[])
         cmdl.add_params({
             "n", "process-name",
             "w", "window-name",
-            "p", "process-id",
-            "m", "module-name"
+            "p", "process-id"
             });
 
         cmdl.parse(argv);
@@ -50,19 +49,27 @@ int main(int, char* argv[])
         // Display help
         if (cmdl[{ "-h", "--help" }])
         {
-            std::cout << "usage: Injector [options]" << std::endl << std::endl;
-            std::cout << "  specify at least one of the following methods:" << std::endl;
-            std::cout << "    -n, --process-name        Identify target process by process name" << std::endl;
-            std::cout << "    -w, --window-name         Identify target process by window title" << std::endl;
-            std::cout << "    -p, --process-id          Identify target process by numeric ID" << std::endl << std::endl;
-            std::cout << "  specify DLL name or absolute path:" << std::endl;
-            std::cout << "    -m, --module-name         DLL name or absolute path" << std::endl << std::endl;
-            std::cout << "  specify at least one of the following actions:" << std::endl;
-            std::cout << "    -i, --inject              Inject/load referenced module" << std::endl;
-            std::cout << "    -e, --eject               Eject/unload referenced module" << std::endl;
+            std::cout << "usage: Injector [options] [modules]" << std::endl << std::endl;
+            std::cout << "  options:" << std::endl;
+            std::cout << "    specify at least one of the following methods:" << std::endl;
+            std::cout << "      -n, --process-name        Identify target process by process name" << std::endl;
+            std::cout << "      -w, --window-name         Identify target process by window title" << std::endl;
+            std::cout << "      -p, --process-id          Identify target process by numeric ID" << std::endl << std::endl;
+            std::cout << "    specify at least one of the following actions:" << std::endl;
+            std::cout << "      -i, --inject              Inject/load referenced module" << std::endl;
+            std::cout << "      -e, --eject               Eject/unload referenced module" << std::endl << std::endl;
+            std::cout << "  modules:" << std::endl;
+            std::cout << "      myLib.dll [anotherLib.dll] [C:\\hooks\\yetAnotherLib.dll]" << std::endl;
             std::cout << std::endl;
 
             return ERROR_SUCCESS;
+        }
+
+        // Check positional parameter count
+        if (cmdl.pos_args().size() <= 1)
+        {
+            std::tcout << "No module name(s) or path(s) specified!" << std::endl;
+            return ERROR_INVALID_PARAMETER;
         }
 
         // Check if at least one action is specified
@@ -88,13 +95,6 @@ int main(int, char* argv[])
             return ERROR_INVALID_PARAMETER;
         }
 
-        // Check for the module we should work with
-        if (!(cmdl({ "-m", "--module-name" })))
-        {
-            std::tcout << "No module name or path specified!" << std::endl;
-            return ERROR_INVALID_PARAMETER;
-        }
-
         // Variable to store process ID
         DWORD ProcID = 0;
         // Fully qualified module path
@@ -102,19 +102,6 @@ int main(int, char* argv[])
 
         // Temporary place for argument
         std::string optArg;
-
-        // Get provided module name
-        if ((cmdl({ "-m", "--module-name" }) >> optArg))
-        {
-            if (PathIsRelativeA(optArg.c_str()))
-            {
-                ModulePath = Injector::Get()->GetPath(utf8_to_wstr(optArg));
-            }
-            else
-            {
-                ModulePath = utf8_to_wstr(optArg);
-            }
-        }
 
         // Find and inject via process name
         if ((cmdl({ "-n", "--process-name" }) >> optArg))
@@ -145,24 +132,53 @@ int main(int, char* argv[])
         // Get privileges required to perform the injection
         Injector::Get()->GetSeDebugPrivilege();
 
+        std::vector<std::wstring> modules;
+
+        for (auto it = std::next(cmdl.pos_args().begin()); it != cmdl.pos_args().end(); ++it)
+            modules.push_back(utf8_to_wstr(*it));
+
         // Inject action
         if (cmdl[{ "-i", "--inject" }])
         {
-            // Inject module
-            Injector::Get()->InjectLib(ProcID, ModulePath);
-            // If we get to this point then no exceptions have been thrown so we
-            // assume success.
-            std::tcout << "Successfully injected module!" << std::endl;
+            for (auto& mod : modules)
+            {
+                if (PathIsRelative(mod.c_str()))
+                {
+                    ModulePath = Injector::Get()->GetPath(mod);
+                }
+                else
+                {
+                    ModulePath = mod;
+                }
+
+                // Inject module
+                Injector::Get()->InjectLib(ProcID, ModulePath);
+                // If we get to this point then no exceptions have been thrown so we
+                // assume success.
+                std::tcout << "Successfully injected module!" << std::endl;
+            }
         }
 
         // Eject action
         if (cmdl[{ "-e", "--eject" }])
         {
-            // Eject module
-            Injector::Get()->EjectLib(ProcID, ModulePath);
-            // If we get to this point then no exceptions have been thrown so we
-            // assume success.
-            std::tcout << "Successfully ejected module!" << std::endl;
+            for (auto& mod : modules)
+            {
+                if (PathIsRelative(mod.c_str()))
+                {
+                    ModulePath = Injector::Get()->GetPath(mod);
+                }
+                else
+                {
+                    ModulePath = mod;
+                }
+
+                // Eject module
+                Injector::Get()->EjectLib(ProcID, ModulePath);
+                // If we get to this point then no exceptions have been thrown so we
+                // assume success.
+                std::tcout << "Successfully ejected module!" << std::endl;
+            }
         }
     }
     // Catch STL-based exceptions.
