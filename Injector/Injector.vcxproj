@@ -145,8 +145,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <DebugInformationFormat>
-      </DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnablePREfast>true</EnablePREfast>
     </ClCompile>
     <Link>
@@ -215,7 +214,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
@@ -229,18 +228,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="getopt.cpp" />
     <ClCompile Include="Injector.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Seh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnsureCleanup.h" />
-    <ClInclude Include="getopt.h" />
     <ClInclude Include="Injector.h" />
-    <ClInclude Include="ProcFindMethod.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Seh.h" />
+    <ClInclude Include="StringUtil.h" />
     <ClInclude Include="StringWrap.h" />
   </ItemGroup>
   <ItemGroup>

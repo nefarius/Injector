@@ -6,11 +6,11 @@
 
 // C++ Standard Library
 #include <vector>
-#include <algorithm>
 
 // StealthLib
 #include "Injector.h"
 #include "EnsureCleanup.h"
+#include "StringUtil.h"
 
 // Static data
 Injector* Injector::m_pSingleton = 0;
@@ -238,7 +238,7 @@ DWORD Injector::GetProcessIdByName(const std::tstring& Name)
 	for (; MoreMods; MoreMods = Process32Next(Snap, &ProcEntry)) 
 	{
 		std::tstring CurrentProcess(ProcEntry.szExeFile);
-		std::transform(CurrentProcess.begin(),CurrentProcess.end(),CurrentProcess.begin(),tolower);
+        CurrentProcess = toLower(CurrentProcess);
 		Found = (CurrentProcess == Name);
 		if (Found) break;
 	}
