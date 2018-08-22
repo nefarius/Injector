@@ -10,15 +10,16 @@ Inject any DLL into any running process with ease! Injector is a command line to
 
 You may use it in you post-build events in Visual Studio to save time and take away complexity of code by "outsourcing" the injection process. You may of course use it for any othe scenario which comes on your mind. Check out the possible command line arguments:
 
-- `--process-name` identifies the target process by it's module name
-- `--window-name` identifies the target process by it's main windows name
-- `--process-id` identifies the target process by it's PID
-- `--module-name` sets the absolute (or relative) path of the DLL to be in-/ejected
-- `--inject` or `--eject` specifies the action to perform (inject or eject the DLL)
+- `-n|--process-name` identifies the target process by it's module name
+- `-w|--window-name` identifies the target process by it's main windows name
+- `-p|--process-id` identifies the target process by it's PID
+- `-i|--inject` or `-e|--eject` specifies the action to perform (inject or eject the DLL)
 
-Yeah you read right: you can also eject any library with the `--eject` action.
+Then simply append one or more absolute (or relative) path(s) of the DLL to be in-/ejected.
 
-Many thanks to [Joshua "Cypher" Boyce](http://www.raptorfactor.com/) who initially wrote the injection-classes and shared them with the world.
+## Credits
+
+Many thanks to [Joshua "Cypher" Boyce](http://www.raptorfactor.com/) who initially wrote the injection-classes and shared them with the world. [Argh! by Adi Shavit](https://github.com/adishavit/argh) is used to parse the command-line arguments.
 
 ## Download
 
@@ -26,4 +27,4 @@ Head over to [Releases](https://github.com/nefarius/Injector/releases/latest) to
 
 ## Builds
 
-[Automated builds end up here](https://buildbot.vigem.org/builds/Injector/master/), may be unstable and riddled with bugs, use with care.
+[Latest automated builds end up here](https://buildbot.vigem.org/builds/Injector/master/); might be unstable and contain bugs, use with care.
