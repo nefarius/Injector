@@ -6,7 +6,7 @@ DLL injection/ejection command-line utility.
 
 Inject any DLL into any running process with ease! Injector is a command line tool abstracting the messy injection process away from you. It can't be more simple:
 
-`Injector.exe --process-name notepad.exe --module-name C:\Temp\myHooks.dll --inject`
+`Injector.exe --process-name notepad.exe --inject C:\Temp\myHooks.dll C:\Temp\myOverlay.dll`
 
 You may use it in you post-build events in Visual Studio to save time and take away complexity of code by "outsourcing" the injection process. You may of course use it for any othe scenario which comes on your mind. Check out the possible command line arguments:
 
@@ -17,9 +17,13 @@ You may use it in you post-build events in Visual Studio to save time and take a
 
 Then simply append one or more absolute (or relative) path(s) of the DLL to be in-/ejected.
 
+Invoke `Injector.exe -h` for help.
+
 ## Credits
 
-Many thanks to [Joshua "Cypher" Boyce](http://www.raptorfactor.com/) who initially wrote the injection-classes and shared them with the world. [Argh! by Adi Shavit](https://github.com/adishavit/argh) is used to parse the command-line arguments.
+Many thanks to [Joshua "Cypher" Boyce](http://www.raptorfactor.com/) who initially wrote the injection-classes and shared them with the world.
+
+[Argh! by Adi Shavit](https://github.com/adishavit/argh) is used to parse the command-line arguments.
 
 ## Download
 
