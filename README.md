@@ -12,9 +12,9 @@ Inject any DLL into any running process with ease! Injector is a command line to
 
 You may use it in you post-build events in Visual Studio to save time and take away complexity of code by "outsourcing" the injection process. You may of course use it for any othe scenario which comes on your mind. Check out the possible command line arguments:
 
-- `-n|--process-name` identifies the target process by it's module name
-- `-w|--window-name` identifies the target process by it's main windows name
-- `-p|--process-id` identifies the target process by it's PID
+- `-n|--process-name` identifies the target process by its module name
+- `-w|--window-name` identifies the target process by its main windows name
+- `-p|--process-id` identifies the target process by its PID
 - `-i|--inject` or `-e|--eject` specifies the action to perform (inject or eject the DLL)
 
 Then simply append one or more absolute (or relative) path(s) of the DLL to be in-/ejected.
