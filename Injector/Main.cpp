@@ -26,7 +26,7 @@ int main(int, char* argv[])
         SehGuard Guard;
 
         // Injector version number
-        const std::tstring VerNum(_T("20180821"));
+        const std::tstring VerNum(_T("20190819"));
 
         // Version and copyright output
 #ifdef _WIN64
@@ -34,7 +34,7 @@ int main(int, char* argv[])
 #else
         std::tcout << _T("Injector x86 [Version ") << VerNum << _T("]") << std::endl;
 #endif
-        std::tcout << _T("Copyright (c) 2009 Cypher, 2012-2018 Nefarius. All rights reserved.") << std::endl << std::endl;
+        std::tcout << _T("Copyright (c) 2009 Cypher, 2012-2019 Nefarius. All rights reserved.") << std::endl << std::endl;
 
         argh::parser cmdl;
 
@@ -104,15 +104,17 @@ int main(int, char* argv[])
         std::string optArg;
 
         // Find and inject via process name
-        if ((cmdl({ "-n", "--process-name" }) >> optArg))
+        if (cmdl({ "-n", "--process-name" }))
         {
+            optArg = cmdl({ "-n", "--process-name" }).str();
             // Attempt injection via process name
             ProcID = Injector::Get()->GetProcessIdByName(utf8_to_wstr(toLower(optArg)));
         }
 
         // Find and inject via window name
-        if ((cmdl({ "-w", "--window-name" }) >> optArg))
+        if (cmdl({ "-w", "--window-name" }))
         {
+            optArg = cmdl({ "-w", "--window-name" }).str();
             // Attempt injection via window name
             ProcID = Injector::Get()->GetProcessIdByWindow(utf8_to_wstr(optArg));
         }
