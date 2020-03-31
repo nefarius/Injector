@@ -68,21 +68,21 @@ int main(int, char* argv[])
         // Check positional parameter count
         if (cmdl.pos_args().size() <= 1)
         {
-            std::tcout << "No module name(s) or path(s) specified!" << std::endl;
+            std::tcerr << "No module name(s) or path(s) specified!" << std::endl;
             return ERROR_INVALID_PARAMETER;
         }
 
         // Check if at least one action is specified
         if (!cmdl[{ "-i", "--inject", "-e", "--eject" }])
         {
-            std::tcout << "No action specified!" << std::endl;
+            std::tcerr << "No action specified!" << std::endl;
             return ERROR_INVALID_PARAMETER;
         }
 
         // Check if user wants more than we can handle ;)
         if (cmdl[{ "-i", "--inject" }] && cmdl[{ "-e", "--eject" }])
         {
-            std::tcout << "Only one action at a time allowed!" << std::endl;
+            std::tcerr << "Only one action at a time allowed!" << std::endl;
             return ERROR_INVALID_PARAMETER;
         }
 
@@ -91,7 +91,7 @@ int main(int, char* argv[])
             && !(cmdl({ "-w", "--window-name" }))
             && !(cmdl({ "-p", "--process-id" })))
         {
-            std::tcout << "No process identifier specified!" << std::endl;
+            std::tcerr << "No process identifier specified!" << std::endl;
             return ERROR_INVALID_PARAMETER;
         }
 
@@ -188,7 +188,7 @@ int main(int, char* argv[])
     {
         std::string TempError(e.what());
         std::tstring Error(TempError.begin(), TempError.end());
-        std::tcout << "General Error:" << std::endl
+        std::tcerr << "General Error:" << std::endl
             << Error << std::endl;
     }
     // Catch custom SEH-proxy exceptions.
@@ -196,7 +196,7 @@ int main(int, char* argv[])
     // TODO: Convert to string and dump more verbose output.
     catch (const SehException& e)
     {
-        std::tcout << "SEH Error:" << std::endl
+        std::tcerr << "SEH Error:" << std::endl
             << e.GetCode() << std::endl;
     }
     // Catch any other unknown exceptions.
@@ -206,7 +206,7 @@ int main(int, char* argv[])
     // messy.
     catch (...)
     {
-        std::tcout << "Unknown error!" << std::endl;
+        std::tcerr << "Unknown error!" << std::endl;
     }
 
     // Return success
