@@ -16,6 +16,13 @@
 #include <string>
 #include <locale>
 
+// Return values
+#define RESULT_SUCCESS          0
+#define RESULT_INVALID_COMMAND  1
+#define RESULT_GENERAL_ERROR    2
+#define RESULT_SEH_ERROR        3
+#define RESULT_UNKNOWN_ERROR    4
+
 
 // Entry point
 int main(int, char* argv[])
@@ -62,28 +69,28 @@ int main(int, char* argv[])
             std::cout << "      myLib.dll [anotherLib.dll] [C:\\hooks\\yetAnotherLib.dll]" << std::endl;
             std::cout << std::endl;
 
-            return ERROR_SUCCESS;
+            return RESULT_SUCCESS;
         }
 
         // Check positional parameter count
         if (cmdl.pos_args().size() <= 1)
         {
             std::tcerr << "No module name(s) or path(s) specified!" << std::endl;
-            return ERROR_INVALID_PARAMETER;
+            return RESULT_INVALID_COMMAND;
         }
 
         // Check if at least one action is specified
         if (!cmdl[{ "-i", "--inject", "-e", "--eject" }])
         {
             std::tcerr << "No action specified!" << std::endl;
-            return ERROR_INVALID_PARAMETER;
+            return RESULT_INVALID_COMMAND;
         }
 
         // Check if user wants more than we can handle ;)
         if (cmdl[{ "-i", "--inject" }] && cmdl[{ "-e", "--eject" }])
         {
             std::tcerr << "Only one action at a time allowed!" << std::endl;
-            return ERROR_INVALID_PARAMETER;
+            return RESULT_INVALID_COMMAND;
         }
 
         // Check if there's at least one process identification method specified
@@ -92,7 +99,7 @@ int main(int, char* argv[])
             && !(cmdl({ "-p", "--process-id" })))
         {
             std::tcerr << "No process identifier specified!" << std::endl;
-            return ERROR_INVALID_PARAMETER;
+            return RESULT_INVALID_COMMAND;
         }
 
         // Variable to store process ID
@@ -190,6 +197,7 @@ int main(int, char* argv[])
         std::tstring Error(TempError.begin(), TempError.end());
         std::tcerr << "General Error:" << std::endl
             << Error << std::endl;
+        return RESULT_GENERAL_ERROR;
     }
     // Catch custom SEH-proxy exceptions.
     // Currently only supports outputting error code.
@@ -198,6 +206,7 @@ int main(int, char* argv[])
     {
         std::tcerr << "SEH Error:" << std::endl
             << e.GetCode() << std::endl;
+        return RESULT_SEH_ERROR;
     }
     // Catch any other unknown exceptions.
     // TODO: Find a better way to handle this. Should never happen anyway, but
@@ -207,8 +216,9 @@ int main(int, char* argv[])
     catch (...)
     {
         std::tcerr << "Unknown error!" << std::endl;
+        return RESULT_UNKNOWN_ERROR;
     }
 
     // Return success
-    return ERROR_SUCCESS;
+    return RESULT_SUCCESS;
 }
