@@ -10,6 +10,7 @@
 #define tstringstream wstringstream
 #define tcout wcout
 #define tcin wcin
+#define tcerr wcerr
 #define tistream wistream
 #define tostream wostream
 #else
@@ -20,6 +21,7 @@
 #define tstringstream stringstream
 #define tcout cout
 #define tcin cin
+#define tcerr cerr
 #define tistream istream
 #define tostream ostream
 #endif // _UNICODE
