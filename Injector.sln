@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2042
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Injector", "Injector\Injector.vcxproj", "{21A04F4C-54BF-422A-A53A-F963084D0975}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{C3219F46-D9E1-44CA-9976-81BFE86E55C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +21,6 @@ Global
 		{21A04F4C-54BF-422A-A53A-F963084D0975}.Release|Win32.Build.0 = Release|Win32
 		{21A04F4C-54BF-422A-A53A-F963084D0975}.Release|x64.ActiveCfg = Release|x64
 		{21A04F4C-54BF-422A-A53A-F963084D0975}.Release|x64.Build.0 = Release|x64
-		{C3219F46-D9E1-44CA-9976-81BFE86E55C4}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{C3219F46-D9E1-44CA-9976-81BFE86E55C4}.Debug|Win32.Build.0 = Debug|Any CPU
-		{C3219F46-D9E1-44CA-9976-81BFE86E55C4}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{C3219F46-D9E1-44CA-9976-81BFE86E55C4}.Debug|x64.Build.0 = Debug|Any CPU
-		{C3219F46-D9E1-44CA-9976-81BFE86E55C4}.Release|Win32.ActiveCfg = Release|Any CPU
-		{C3219F46-D9E1-44CA-9976-81BFE86E55C4}.Release|Win32.Build.0 = Release|Any CPU
-		{C3219F46-D9E1-44CA-9976-81BFE86E55C4}.Release|x64.ActiveCfg = Release|Any CPU
-		{C3219F46-D9E1-44CA-9976-81BFE86E55C4}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
