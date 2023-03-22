@@ -2,7 +2,7 @@
 
 DLL injection/ejection command-line utility.
 
-[![Build status](https://ci.appveyor.com/api/projects/status/lhpqy99c5lxjxaxv?svg=true)](https://ci.appveyor.com/project/nefarius/injector) [![GitHub All Releases](https://img.shields.io/github/downloads/nefarius/Injector/total)](https://somsubhra.github.io/github-release-stats/?username=nefarius&repository=Injector)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/nefarius/Injector/msbuild.yml) [![GitHub All Releases](https://img.shields.io/github/downloads/nefarius/Injector/total)](https://somsubhra.github.io/github-release-stats/?username=nefarius&repository=Injector)
 
 ## About
 
