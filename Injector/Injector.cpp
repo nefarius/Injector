@@ -27,6 +27,21 @@ Injector* Injector::Get()
 Injector::Injector()
 { }
 
+bool Injector::icompare_pred(const unsigned char a, const unsigned char b)
+{
+	return std::tolower(a) == std::tolower(b);
+}
+
+bool Injector::icompare(const std::wstring& a, const std::wstring& b) const
+{
+	if (a.length() == b.length())
+	{
+		return std::equal(b.begin(), b.end(),
+		                  a.begin(), icompare_pred);
+	}
+	return false;
+}
+
 // Injects a module (fully qualified path) via process id
 void Injector::InjectLib(DWORD ProcID, const std::wstring& Path)
 {
