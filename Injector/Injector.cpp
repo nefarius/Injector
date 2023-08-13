@@ -11,6 +11,7 @@
 #include "Injector.h"
 #include "EnsureCleanup.h"
 #include "StringUtil.h"
+#include "UniUtil.h"
 
 // Static data
 Injector* Injector::m_pSingleton = 0;
@@ -231,8 +232,12 @@ std::tstring Injector::GetPath( const std::tstring& ModuleName )
 	// Check path/file is valid
 	if (GetFileAttributes(ModulePath.c_str()) == INVALID_FILE_ATTRIBUTES)
 	{
-		std::string NewModulePath(ModulePath.begin(),ModulePath.end());
-		throw std::runtime_error("Could not find module. Path: '" + NewModulePath + "'.");
+#ifdef _UNICODE
+		std::string NarrowModulePath(ConvertWideToANSI(ModulePath));
+#else
+		std::string NarrowModulePath(ModulePath.begin(), ModulePath.end());
+#endif
+		throw std::runtime_error("Could not find module. Path: '" + NarrowModulePath + "'.");
 	}
 
 	// Return module path

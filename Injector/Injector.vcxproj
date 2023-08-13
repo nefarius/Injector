@@ -335,6 +335,7 @@
     <ClInclude Include="Seh.h" />
     <ClInclude Include="StringUtil.h" />
     <ClInclude Include="StringWrap.h" />
+    <ClInclude Include="UniUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Injector.rc" />
