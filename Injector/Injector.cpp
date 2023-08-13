@@ -108,8 +108,9 @@ void Injector::EjectLib(DWORD ProcID, const std::wstring& Path)
 	{
 		std::wstring ModuleName(ModEntry.szModule);
 		std::wstring ExePath(ModEntry.szExePath);
-		Found = (ModuleName == Path || ExePath == Path);
-		if (Found) break;
+		Found = (icompare(ModuleName, Path) || icompare(ExePath, Path));
+		if (Found)
+			break;
 	}
 	if (!Found)
 		throw std::runtime_error("Could not find module in remote process.");;
