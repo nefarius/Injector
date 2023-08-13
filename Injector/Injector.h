@@ -49,7 +49,7 @@ private:
 	// Case-insensitive string comparison utility functions
 	// 
 
-	static bool icompare_pred(unsigned char a, unsigned char b);
+	static bool icompare_pred(TCHAR a, TCHAR b);
 
-	bool icompare(std::wstring const& a, std::wstring const& b) const;
+	bool icompare(std::tstring const& a, std::tstring const& b) const;
 };

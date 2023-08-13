@@ -27,7 +27,7 @@ Injector* Injector::Get()
 Injector::Injector()
 { }
 
-bool Injector::icompare_pred(const unsigned char a, const unsigned char b)
+bool Injector::icompare_pred(const wchar_t a, const wchar_t b)
 {
 	return std::tolower(a) == std::tolower(b);
 }
