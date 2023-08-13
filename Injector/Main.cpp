@@ -54,7 +54,7 @@ int main(int, char* argv[])
         cmdl.parse(argv);
 
         // Display help
-        if (cmdl[{ "-h", "--help" }])
+        if (cmdl.pos_args().size() <= 1 || cmdl[{ "-h", "--help" }])
         {
             std::cout << "usage: Injector [options] [modules]" << std::endl << std::endl;
             std::cout << "  options:" << std::endl;
@@ -70,13 +70,6 @@ int main(int, char* argv[])
             std::cout << std::endl;
 
             return RESULT_SUCCESS;
-        }
-
-        // Check positional parameter count
-        if (cmdl.pos_args().size() <= 1)
-        {
-            std::tcerr << "No module name(s) or path(s) specified!" << std::endl;
-            return RESULT_INVALID_COMMAND;
         }
 
         // Check if at least one action is specified
