@@ -14,7 +14,7 @@
 #include "UniUtil.h"
 
 // Static data
-Injector* Injector::m_pSingleton = 0;
+Injector* Injector::m_pSingleton = nullptr;
 
 // Get injector singleton
 Injector* Injector::Get()
@@ -109,7 +109,7 @@ void Injector::InjectLib(DWORD ProcID, const std::wstring& Path)
 	PTHREAD_START_ROUTINE pfnThreadRtn = reinterpret_cast<PTHREAD_START_ROUTINE>
 		(GetProcAddress(hKernel32, "LoadLibraryW"));
 	if (!pfnThreadRtn)
-		throw std::runtime_error("Could not get pointer to LoadLibraryW.");;
+		throw std::runtime_error("Could not get pointer to LoadLibraryW.");
 
 	// Create a remote thread that calls LoadLibraryW(DLLPathname)
 	EnsureCloseHandle Thread(CreateRemoteThread(Process, NULL, 0, pfnThreadRtn, 
@@ -191,7 +191,7 @@ void Injector::EjectLib(DWORD ProcID, const std::string& Path)
 	EjectLib(ProcID, UnicodePath);
 }
 
-// Gives the current process the SeDebugPrivelige so we can get the 
+// Gives the current process the SeDebugPrivilege so we can get the
 // required process handle.
 // Note: Requires administrator rights
 void Injector::GetSeDebugPrivilege()
