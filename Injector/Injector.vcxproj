@@ -219,6 +219,7 @@
       <DebugInformationFormat>
       </DebugInformationFormat>
       <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>DbgHelp.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -283,6 +284,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>DbgHelp.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
