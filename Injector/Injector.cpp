@@ -43,6 +43,38 @@ bool Injector::icompare(const std::wstring& a, const std::wstring& b) const
 	return false;
 }
 
+// Check if a module is injected via process ID, and return the base address
+BYTE* Injector::GetModuleBaseAddress(DWORD ProcID, const std::wstring& Path) {
+	// Grab a new snapshot of the process
+	EnsureCloseHandle Snapshot(CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, ProcID));
+	if (Snapshot == INVALID_HANDLE_VALUE)
+		throw std::runtime_error("Could not get module snapshot for remote process.");;
+
+	// Get the HMODULE of the desired library
+	MODULEENTRY32W ModEntry = { sizeof(ModEntry) };
+	bool Found = false;
+	BOOL bMoreMods = Module32FirstW(Snapshot, &ModEntry);
+	for (; bMoreMods; bMoreMods = Module32NextW(Snapshot, &ModEntry)) 
+	{
+		std::wstring ModuleName(ModEntry.szModule);
+		std::wstring ExePath(ModEntry.szExePath);
+		Found = (icompare(ModuleName, Path) || icompare(ExePath, Path));
+		if (Found)
+			return ModEntry.modBaseAddr;
+	}
+	return nullptr;
+}
+
+// MBCS version of GetModuleBaseAddress
+BYTE* Injector::GetModuleBaseAddress(DWORD ProcID, const std::string& Path)
+{
+	// Convert path to unicode
+	std::wstring UnicodePath(Path.begin(),Path.end());
+
+	// Call the Unicode version of the function to actually do the work.
+	return GetModuleBaseAddress(ProcID, UnicodePath);
+}
+
 // Injects a module (fully qualified path) via process id
 void Injector::InjectLib(DWORD ProcID, const std::wstring& Path)
 {
@@ -88,13 +120,10 @@ void Injector::InjectLib(DWORD ProcID, const std::wstring& Path)
 	// Wait for the remote thread to terminate
 	WaitForSingleObject(Thread, INFINITE);
 
-	// Get thread exit code
-	DWORD ExitCode;
-	if (!GetExitCodeThread(Thread,&ExitCode))
-		throw std::runtime_error("Could not get thread exit code.");
-
-	// Check LoadLibrary succeeded and returned a module base
-	if(!ExitCode)
+	// it's possible that we get a thread exit code of 0 with a non-zero HMODULE,
+	// as the thread exit code is a DWORD, which is smaller than an HMODULE - so,
+	// check the process list.
+	if (!GetModuleBaseAddress(ProcID, Path))
 		throw std::runtime_error("Call to LoadLibraryW in remote process failed.");
 }
 
@@ -111,24 +140,8 @@ void Injector::InjectLib(DWORD ProcID, const std::string& Path)
 // Ejects a module (fully qualified path) via process id
 void Injector::EjectLib(DWORD ProcID, const std::wstring& Path)
 {
-	// Grab a new snapshot of the process
-	EnsureCloseHandle Snapshot(CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, ProcID));
-	if (Snapshot == INVALID_HANDLE_VALUE)
-		throw std::runtime_error("Could not get module snapshot for remote process.");;
-
-	// Get the HMODULE of the desired library
-	MODULEENTRY32W ModEntry = { sizeof(ModEntry) };
-	bool Found = false;
-	BOOL bMoreMods = Module32FirstW(Snapshot, &ModEntry);
-	for (; bMoreMods; bMoreMods = Module32NextW(Snapshot, &ModEntry)) 
-	{
-		std::wstring ModuleName(ModEntry.szModule);
-		std::wstring ExePath(ModEntry.szExePath);
-		Found = (icompare(ModuleName, Path) || icompare(ExePath, Path));
-		if (Found)
-			break;
-	}
-	if (!Found)
+	const auto BaseAddress = GetModuleBaseAddress(ProcID, Path);
+	if (!BaseAddress)
 		throw std::runtime_error("Could not find module in remote process.");;
 
 	// Get a handle for the target process.
@@ -151,7 +164,7 @@ void Injector::EjectLib(DWORD ProcID, const std::wstring& Path)
 
 	// Create a remote thread that calls FreeLibrary()
 	EnsureCloseHandle Thread(CreateRemoteThread(Process, NULL, 0, 
-		pfnThreadRtn, ModEntry.modBaseAddr, 0, NULL));
+		pfnThreadRtn, BaseAddress, 0, NULL));
 	if (!Thread) 
 		throw std::runtime_error("Could not create thread in remote process.");
 

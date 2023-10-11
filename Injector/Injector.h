@@ -16,6 +16,10 @@ public:
 	// Get singleton
 	static Injector* Get();
 
+	// Check if the library is injected.
+	BYTE* GetModuleBaseAddress(DWORD ProcID, const std::wstring& Path);
+	BYTE* GetModuleBaseAddress(DWORD ProcID, const std::string& Path);
+
 	// Inject library
 	void InjectLib(DWORD ProcID, const std::wstring& Path);
 	void InjectLib(DWORD ProcID, const std::string& Path);
