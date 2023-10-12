@@ -25,7 +25,7 @@ Invoke `Injector.exe -h` for help.
 
 ## Credits
 
-Many thanks to [Joshua "Cypher" Boyce](http://www.raptorfactor.com/) who initially wrote the injection-classes and shared them with the world.
+Many thanks to [Joshua "Cypher" Boyce](https://web.archive.org/web/20160316200123/http://www.raptorfactor.com/) who initially wrote the injection-classes and shared them with the world.
 
 [Argh! by Adi Shavit](https://github.com/adishavit/argh) is used to parse the command-line arguments.
 
