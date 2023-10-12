@@ -16,6 +16,14 @@ S_type toLower(const S_type& in)
 }
 
 inline std::wstring utf8_to_wstr(const std::string& utf8) {
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> wcu8;
-    return wcu8.from_bytes(utf8);
+    const auto wideCharCount = MultiByteToWideChar(CP_UTF8, 0, utf8.data(), utf8.size(), nullptr, 0);
+    std::wstring wstr;
+    wstr.resize(wideCharCount);
+
+    // While the docs say the return value includes trailing null, this is only the case if the
+    // input has a trailing null, and if we include it in the size parameter.
+    //
+    // utf8.size() excludes the trailing null, so the wstring does too
+    MultiByteToWideChar(CP_UTF8, 0, utf8.data(), utf8.size(), wstr.data(), wideCharCount);
+    return wstr;
 }
