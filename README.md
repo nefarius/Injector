@@ -31,4 +31,4 @@ Many thanks to [Joshua "Cypher" Boyce](http://www.raptorfactor.com/) who initial
 
 ## Downloads
 
-Head over to [Releases](https://github.com/nefarius/Injector/releases/latest) to download x86 and x64 binaries.
+Head over to [Releases](https://github.com/nefarius/Injector/releases/latest) to download x86, x64 and ARM64 binaries.
