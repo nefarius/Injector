@@ -1,8 +1,6 @@
 name: 'Support Requests'
 
 on:
-  workflow_run:
-    workflows: ["*"]
   issues:
     types: [labeled, unlabeled, reopened]
 

@@ -5,6 +5,14 @@ VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Injector", "Injector\Injector.vcxproj", "{21A04F4C-54BF-422A-A53A-F963084D0975}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E16EAEEE-0D6A-4DA0-A545-96C15834F52E}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		.github\workflows\msbuild.yml = .github\workflows\msbuild.yml
+		README.md = README.md
+		.github\workflows\support.yml = .github\workflows\support.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
