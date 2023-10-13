@@ -64,9 +64,11 @@ BYTE* Injector::GetModuleBaseAddress(HANDLE Process, const std::wstring& Path) {
 	{
 		WCHAR ModuleName[MAX_PATH];
 		WCHAR ExePath[MAX_PATH];
-		if (!GetModuleBaseNameW(Process, Module, ModuleName, sizeof(ModuleName)))
+		// The size of the ModuleName buffer, in characters.
+		if (!GetModuleBaseNameW(Process, Module, ModuleName, sizeof(ModuleName) / sizeof(WCHAR)))
 			throw std::runtime_error("Could not get ModuleName.");
-		if (!GetModuleFileNameExW(Process, Module, ExePath, sizeof(ExePath)))
+		// The size of the ExePath buffer, in characters.
+		if (!GetModuleFileNameExW(Process, Module, ExePath, sizeof(ExePath) / sizeof(WCHAR)))
 			throw std::runtime_error("Could not get ExePath.");
 		Found = (icompare(ModuleName, Path) || icompare(ExePath, Path));
 		if (Found)
