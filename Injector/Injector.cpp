@@ -254,6 +254,11 @@ std::tstring Injector::GetPath( const std::tstring& ModuleName )
 	ModulePath = ModulePath.substr(0, ModulePath.rfind( _T("\\") ) + 1);
 	ModulePath.append(ModuleName);
 
+	TCHAR FullModulePath[MAX_PATH];
+	if (!GetFullPathName(ModulePath.c_str(), sizeof(FullModulePath) / sizeof(TCHAR), FullModulePath, NULL))
+		throw std::runtime_error("Could not get full path to module.");
+	ModulePath = std::tstring(&FullModulePath[0]);
+
 	// Check path/file is valid
 	if (GetFileAttributes(ModulePath.c_str()) == INVALID_FILE_ATTRIBUTES)
 	{
