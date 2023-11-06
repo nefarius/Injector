@@ -17,8 +17,8 @@ public:
 	static Injector* Get();
 
 	// Check if the library is injected.
-	BYTE* GetModuleBaseAddress(DWORD ProcID, const std::wstring& Path);
-	BYTE* GetModuleBaseAddress(DWORD ProcID, const std::string& Path);
+	BYTE* GetModuleBaseAddress(HANDLE Process, const std::wstring& Path);
+	BYTE* GetModuleBaseAddress(HANDLE Process, const std::string& Path);
 
 	// Inject library
 	void InjectLib(DWORD ProcID, const std::wstring& Path);

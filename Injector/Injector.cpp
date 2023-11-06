@@ -1,6 +1,7 @@
 // Windows Includes
 #include <Windows.h>
 #include <TlHelp32.h>
+#include <Psapi.h>
 #include <malloc.h>
 #include <Tchar.h>
 
@@ -43,36 +44,47 @@ bool Injector::icompare(const std::wstring& a, const std::wstring& b) const
 	return false;
 }
 
-// Check if a module is injected via process ID, and return the base address
-BYTE* Injector::GetModuleBaseAddress(DWORD ProcID, const std::wstring& Path) {
+// Check if a module is injected via process handle, and return the base address
+BYTE* Injector::GetModuleBaseAddress(HANDLE Process, const std::wstring& Path) {
 	// Grab a new snapshot of the process
-	EnsureCloseHandle Snapshot(CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, ProcID));
-	if (Snapshot == INVALID_HANDLE_VALUE)
-		throw std::runtime_error("Could not get module snapshot for remote process.");;
+	std::vector<HMODULE> Modules;
+	DWORD SizeNeeded = 0;
+	do
+	{
+		Modules.reserve(SizeNeeded / sizeof(HMODULE));
+		if (!EnumProcessModules(Process, Modules.data(), Modules.capacity() * sizeof(HMODULE), &SizeNeeded))
+			throw std::runtime_error("Could not get module snapshot for remote process.");
+	} while (SizeNeeded > Modules.capacity() * sizeof(HMODULE));
+	// Make capacity into size
+	Modules = std::vector<HMODULE>(Modules.begin(), Modules.begin() + SizeNeeded / sizeof(HMODULE));
 
 	// Get the HMODULE of the desired library
-	MODULEENTRY32W ModEntry = { sizeof(ModEntry) };
 	bool Found = false;
-	BOOL bMoreMods = Module32FirstW(Snapshot, &ModEntry);
-	for (; bMoreMods; bMoreMods = Module32NextW(Snapshot, &ModEntry)) 
+	for (const auto &Module : Modules) 
 	{
-		std::wstring ModuleName(ModEntry.szModule);
-		std::wstring ExePath(ModEntry.szExePath);
+		WCHAR ModuleName[MAX_PATH];
+		WCHAR ExePath[MAX_PATH];
+		// The size of the ModuleName buffer, in characters.
+		if (!GetModuleBaseNameW(Process, Module, ModuleName, sizeof(ModuleName) / sizeof(WCHAR)))
+			throw std::runtime_error("Could not get ModuleName.");
+		// The size of the ExePath buffer, in characters.
+		if (!GetModuleFileNameExW(Process, Module, ExePath, sizeof(ExePath) / sizeof(WCHAR)))
+			throw std::runtime_error("Could not get ExePath.");
 		Found = (icompare(ModuleName, Path) || icompare(ExePath, Path));
 		if (Found)
-			return ModEntry.modBaseAddr;
+			return reinterpret_cast<BYTE*>(Module);
 	}
 	return nullptr;
 }
 
 // MBCS version of GetModuleBaseAddress
-BYTE* Injector::GetModuleBaseAddress(DWORD ProcID, const std::string& Path)
+BYTE* Injector::GetModuleBaseAddress(HANDLE Process, const std::string& Path)
 {
 	// Convert path to unicode
 	std::wstring UnicodePath(Path.begin(),Path.end());
 
 	// Call the Unicode version of the function to actually do the work.
-	return GetModuleBaseAddress(ProcID, UnicodePath);
+	return GetModuleBaseAddress(Process, UnicodePath);
 }
 
 // Injects a module (fully qualified path) via process id
@@ -81,6 +93,7 @@ void Injector::InjectLib(DWORD ProcID, const std::wstring& Path)
 	// Get a handle for the target process.
 	EnsureCloseHandle Process(OpenProcess(
 		PROCESS_QUERY_INFORMATION |   // Required by Alpha
+		PROCESS_VM_READ           |   // For EnumProcessModules
 		PROCESS_CREATE_THREAD     |   // For CreateRemoteThread
 		PROCESS_VM_OPERATION      |   // For VirtualAllocEx/VirtualFreeEx
 		PROCESS_VM_WRITE,             // For WriteProcessMemory
@@ -123,7 +136,7 @@ void Injector::InjectLib(DWORD ProcID, const std::wstring& Path)
 	// it's possible that we get a thread exit code of 0 with a non-zero HMODULE,
 	// as the thread exit code is a DWORD, which is smaller than an HMODULE - so,
 	// check the process list.
-	if (!GetModuleBaseAddress(ProcID, Path))
+	if (!GetModuleBaseAddress(Process, Path))
 		throw std::runtime_error("Call to LoadLibraryW in remote process failed.");
 }
 
@@ -140,18 +153,19 @@ void Injector::InjectLib(DWORD ProcID, const std::string& Path)
 // Ejects a module (fully qualified path) via process id
 void Injector::EjectLib(DWORD ProcID, const std::wstring& Path)
 {
-	const auto BaseAddress = GetModuleBaseAddress(ProcID, Path);
-	if (!BaseAddress)
-		throw std::runtime_error("Could not find module in remote process.");;
-
 	// Get a handle for the target process.
 	EnsureCloseHandle Process(OpenProcess(
 		PROCESS_QUERY_INFORMATION |   
+		PROCESS_VM_READ           |   
 		PROCESS_CREATE_THREAD     | 
 		PROCESS_VM_OPERATION,  // For CreateRemoteThread
 		FALSE, ProcID));
 	if (!Process) 
 		throw std::runtime_error("Could not get handle to process.");
+
+	const auto BaseAddress = GetModuleBaseAddress(Process, Path);
+	if (!BaseAddress)
+		throw std::runtime_error("Could not find module in remote process.");;
 
 	// Get the real address of LoadLibraryW in Kernel32.dll
 	HMODULE hKernel32 = GetModuleHandle(TEXT("Kernel32"));
@@ -241,6 +255,11 @@ std::tstring Injector::GetPath( const std::tstring& ModuleName )
 	std::tstring ModulePath(&LoaderPath[0]);
 	ModulePath = ModulePath.substr(0, ModulePath.rfind( _T("\\") ) + 1);
 	ModulePath.append(ModuleName);
+
+	TCHAR FullModulePath[MAX_PATH];
+	if (!GetFullPathName(ModulePath.c_str(), sizeof(FullModulePath) / sizeof(TCHAR), FullModulePath, NULL))
+		throw std::runtime_error("Could not get full path to module.");
+	ModulePath = std::tstring(&FullModulePath[0]);
 
 	// Check path/file is valid
 	if (GetFileAttributes(ModulePath.c_str()) == INVALID_FILE_ATTRIBUTES)
