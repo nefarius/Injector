@@ -27,6 +27,6 @@ inline std::wstring utf8_to_wstr(const std::string& utf8)
 	// input has a trailing null, and if we include it in the size parameter.
 	//
 	// utf8.size() excludes the trailing null, so the wstring does too
-	MultiByteToWideChar(CP_UTF8, 0, utf8.data(), static_cast<int>(utf8.size()), wstr.data(), wideCharCount);
+	MultiByteToWideChar(CP_UTF8, 0, utf8.data(), static_cast<int>(utf8.size()), (LPWSTR)wstr.data(), wideCharCount);
 	return wstr;
 }
