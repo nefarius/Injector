@@ -276,7 +276,7 @@ std::tstring Injector::GetPath( const std::tstring& ModuleName )
 	return ModulePath;
 }
 
-// Get process ID via name (must pass name as lowercase)
+// Get process ID via name
 DWORD Injector::GetProcessIdByName(const std::tstring& Name)
 {
 	// Grab a new snapshot of the process
