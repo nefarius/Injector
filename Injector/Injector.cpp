@@ -291,7 +291,10 @@ DWORD Injector::GetProcessIdByName(const std::tstring& Name, const bool IsCaseSe
 	for (; MoreMods; MoreMods = Process32Next(Snap, &ProcEntry)) 
 	{
 		std::tstring CurrentProcess(ProcEntry.szExeFile);
-        CurrentProcess = toLower(CurrentProcess);
+
+		if (!IsCaseSensitive)
+			CurrentProcess = toLower(CurrentProcess);
+
 		Found = (CurrentProcess == Name);
 		if (Found) break;
 	}
