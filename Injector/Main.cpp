@@ -33,7 +33,7 @@ int main(int, char* argv[])
         SehGuard Guard;
 
         // Injector version number
-        const std::tstring VerNum(_T("20230813"));
+        const std::tstring VerNum(_T("20240218"));
 
         // Version and copyright output
 #ifdef _WIN64
@@ -41,7 +41,7 @@ int main(int, char* argv[])
 #else
         std::tcout << _T("Injector x86 [Version ") << VerNum << _T("]") << std::endl;
 #endif
-        std::tcout << _T("Copyright (c) 2009 Cypher, 2012-2023 Nefarius. All rights reserved.") << std::endl << std::endl;
+        std::tcout << _T("Copyright (c) 2009 Cypher, 2012-2024 Nefarius. All rights reserved.") << std::endl << std::endl;
 
         argh::parser cmdl;
 
