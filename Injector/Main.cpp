@@ -47,6 +47,7 @@ int main(int, char* argv[])
 
         cmdl.add_params({
             "n", "process-name",
+            "c", "case-sensitive",
             "w", "window-name",
             "p", "process-id"
             });
