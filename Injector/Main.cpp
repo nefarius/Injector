@@ -33,7 +33,7 @@ int main(int, char* argv[])
         SehGuard Guard;
 
         // Injector version number
-        const std::tstring VerNum(_T("20230813"));
+        const std::tstring VerNum(_T("20240218"));
 
         // Version and copyright output
 #ifdef _WIN64
@@ -41,12 +41,13 @@ int main(int, char* argv[])
 #else
         std::tcout << _T("Injector x86 [Version ") << VerNum << _T("]") << std::endl;
 #endif
-        std::tcout << _T("Copyright (c) 2009 Cypher, 2012-2023 Nefarius. All rights reserved.") << std::endl << std::endl;
+        std::tcout << _T("Copyright (c) 2009 Cypher, 2012-2024 Nefarius. All rights reserved.") << std::endl << std::endl;
 
         argh::parser cmdl;
 
         cmdl.add_params({
             "n", "process-name",
+            "c", "case-sensitive",
             "w", "window-name",
             "p", "process-id"
             });
@@ -60,6 +61,8 @@ int main(int, char* argv[])
             std::cout << "  options:" << std::endl;
             std::cout << "    specify at least one of the following methods:" << std::endl;
             std::cout << "      -n, --process-name        Identify target process by process name" << std::endl;
+            std::cout << "        -c, --case-sensitive    Make the target process name case-sensitive." << std::endl;
+            std::cout << "                                Only applies when using -n or --process-name." << std::endl;
             std::cout << "      -w, --window-name         Identify target process by window title" << std::endl;
             std::cout << "      -p, --process-id          Identify target process by numeric ID" << std::endl << std::endl;
             std::cout << "    specify at least one of the following actions:" << std::endl;
@@ -107,8 +110,11 @@ int main(int, char* argv[])
         if (cmdl({ "-n", "--process-name" }))
         {
             optArg = cmdl({ "-n", "--process-name" }).str();
+            if (!cmdl[{ "-c", "--case-sensitive" }])
+                optArg = toLower(optArg);
+
             // Attempt injection via process name
-            ProcID = Injector::Get()->GetProcessIdByName(utf8_to_wstr(toLower(optArg)));
+            ProcID = Injector::Get()->GetProcessIdByName(utf8_to_wstr(optArg), cmdl[{ "-c", "--case-sensitive" }]);
         }
 
         // Find and inject via window name

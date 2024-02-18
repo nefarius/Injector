@@ -32,7 +32,7 @@ public:
 	std::tstring GetPath(const std::tstring& ModuleName);
 
 	// Get process id by name
-	DWORD GetProcessIdByName(const std::tstring& Name);
+	DWORD GetProcessIdByName(const std::tstring& Name, bool CompareCaseSensitive);
 	// Get proces id by window
 	DWORD GetProcessIdByWindow(const std::tstring& Name);
 

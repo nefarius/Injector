@@ -276,8 +276,8 @@ std::tstring Injector::GetPath( const std::tstring& ModuleName )
 	return ModulePath;
 }
 
-// Get process ID via name (must pass name as lowercase)
-DWORD Injector::GetProcessIdByName(const std::tstring& Name)
+// Get process ID via name
+DWORD Injector::GetProcessIdByName(const std::tstring& Name, const bool CompareCaseSensitive)
 {
 	// Grab a new snapshot of the process
 	EnsureCloseHandle Snap(CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0));
@@ -291,7 +291,10 @@ DWORD Injector::GetProcessIdByName(const std::tstring& Name)
 	for (; MoreMods; MoreMods = Process32Next(Snap, &ProcEntry)) 
 	{
 		std::tstring CurrentProcess(ProcEntry.szExeFile);
-        CurrentProcess = toLower(CurrentProcess);
+
+		if (!CompareCaseSensitive)
+			CurrentProcess = toLower(CurrentProcess);
+
 		Found = (CurrentProcess == Name);
 		if (Found) break;
 	}
