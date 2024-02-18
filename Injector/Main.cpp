@@ -110,8 +110,11 @@ int main(int, char* argv[])
         if (cmdl({ "-n", "--process-name" }))
         {
             optArg = cmdl({ "-n", "--process-name" }).str();
+            if (cmdl[{ "-c", "--case-sensitive" }])
+                optArg = toLower(optArg);
+
             // Attempt injection via process name
-            ProcID = Injector::Get()->GetProcessIdByName(utf8_to_wstr(toLower(optArg)));
+            ProcID = Injector::Get()->GetProcessIdByName(utf8_to_wstr(optArg));
         }
 
         // Find and inject via window name
