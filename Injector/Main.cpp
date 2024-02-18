@@ -61,6 +61,8 @@ int main(int, char* argv[])
             std::cout << "  options:" << std::endl;
             std::cout << "    specify at least one of the following methods:" << std::endl;
             std::cout << "      -n, --process-name        Identify target process by process name" << std::endl;
+            std::cout << "        -c, --case-sensitive    Make the target process name case-sensitive." << std::endl;
+            std::cout << "                                Only applies when using -n or --process-name." << std::endl;
             std::cout << "      -w, --window-name         Identify target process by window title" << std::endl;
             std::cout << "      -p, --process-id          Identify target process by numeric ID" << std::endl << std::endl;
             std::cout << "    specify at least one of the following actions:" << std::endl;
