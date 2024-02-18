@@ -114,7 +114,7 @@ int main(int, char* argv[])
                 optArg = toLower(optArg);
 
             // Attempt injection via process name
-            ProcID = Injector::Get()->GetProcessIdByName(utf8_to_wstr(optArg));
+            ProcID = Injector::Get()->GetProcessIdByName(utf8_to_wstr(optArg), cmdl[{ "-c", "--case-sensitive" }]);
         }
 
         // Find and inject via window name
