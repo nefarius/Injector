@@ -277,7 +277,7 @@ std::tstring Injector::GetPath( const std::tstring& ModuleName )
 }
 
 // Get process ID via name
-DWORD Injector::GetProcessIdByName(const std::tstring& Name)
+DWORD Injector::GetProcessIdByName(const std::tstring& Name, const bool IsCaseSensitive)
 {
 	// Grab a new snapshot of the process
 	EnsureCloseHandle Snap(CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0));
