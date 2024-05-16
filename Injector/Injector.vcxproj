@@ -159,7 +159,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>DbgHelp.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <UACExecutionLevel>AsInvoker</UACExecutionLevel>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -188,7 +188,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>DbgHelp.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <UACExecutionLevel>AsInvoker</UACExecutionLevel>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -223,7 +223,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>DbgHelp.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <UACExecutionLevel>AsInvoker</UACExecutionLevel>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -255,7 +255,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>DbgHelp.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <UACExecutionLevel>AsInvoker</UACExecutionLevel>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -288,7 +288,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>DbgHelp.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <UACExecutionLevel>AsInvoker</UACExecutionLevel>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -319,7 +319,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>DbgHelp.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <UACExecutionLevel>AsInvoker</UACExecutionLevel>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>

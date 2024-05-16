@@ -234,7 +234,7 @@ void Injector::GetSeDebugPrivilege()
 
 	// Apply the adjusted privileges
 	if (!AdjustTokenPrivileges(Token, FALSE, &Privileges,
-		sizeof (Privileges), NULL, NULL)) 
+		sizeof (Privileges), NULL, NULL) || GetLastError() == ERROR_NOT_ALL_ASSIGNED)
 		throw std::runtime_error("Could not adjust token privileges.");
 }
 
