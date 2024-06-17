@@ -1,6 +1,4 @@
-<img src="assets/NSS-128x128.png" align="right" />
-
-# Injector
+# <img src="assets/NSS-128x128.png" align="left" />Injector
 
 DLL injection/ejection command-line utility.
 
